@@ -1,0 +1,98 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               Int               @id @default(autoincrement())
+  username         String            @unique
+  email            String            @unique
+  memberships      GroupMembership[]
+  expensesPaid     Expense[]         @relation("ExpensesPaid")
+  splits           ExpenseSplit[]
+  paymentsSent     Payment[]         @relation("PaymentsSent")
+  paymentsReceived Payment[]         @relation("PaymentsReceived")
+}
+
+model Group {
+  id          Int               @id @default(autoincrement())
+  name        String
+  createdAt   DateTime          @default(now())
+  memberships GroupMembership[]
+  expenses    Expense[]
+  payments    Payment[]
+}
+
+model GroupMembership {
+  id       Int       @id @default(autoincrement())
+  groupId  Int
+  userId   Int
+  joinedAt DateTime
+  leftAt   DateTime?
+  group    Group     @relation(fields: [groupId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
+}
+
+model Expense {
+  id           Int            @id @default(autoincrement())
+  groupId      Int
+  description  String
+  amount       Float
+  currency     String
+  exchangeRate Float          @default(1.0)
+  paidById     Int
+  date         DateTime
+  splitType    String // EQUAL, PERCENTAGE, SHARE, UNEQUAL
+  createdAt    DateTime       @default(now())
+  group        Group          @relation(fields: [groupId], references: [id])
+  paidBy       User           @relation("ExpensesPaid", fields: [paidById], references: [id])
+  splits       ExpenseSplit[]
+}
+
+model ExpenseSplit {
+  id        Int     @id @default(autoincrement())
+  expenseId Int
+  userId    Int
+  amount    Float
+  share     Float // percentage, share count, or raw unequal amount
+  expense   Expense @relation(fields: [expenseId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id           Int      @id @default(autoincrement())
+  groupId      Int
+  payerId      Int
+  payeeId      Int
+  amount       Float
+  currency     String
+  exchangeRate Float    @default(1.0)
+  date         DateTime
+  group        Group    @relation(fields: [groupId], references: [id])
+  payer        User     @relation("PaymentsSent", fields: [payerId], references: [id])
+  payee        User     @relation("PaymentsReceived", fields: [payeeId], references: [id])
+}
+
+model ImportJob {
+  id        Int             @id @default(autoincrement())
+  fileName  String
+  status    String // PENDING, COMPLETED, FAILED
+  createdAt DateTime        @default(now())
+  anomalies ImportAnomaly[]
+}
+
+model ImportAnomaly {
+  id                  Int       @id @default(autoincrement())
+  importJobId         Int
+  rowNumber           Int
+  anomalyType         String
+  description         String
+  rawData             String
+  proposedAction      String
+  status              String // PENDING, APPROVED, REJECTED
+  resolvedExpenseData String // JSON string representation of parsed schema
+  importJob           ImportJob @relation(fields: [importJobId], references: [id])
+}
