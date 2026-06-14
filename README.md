@@ -1,0 +1,2 @@
+# spreetail
+Spreetail Assignment task
