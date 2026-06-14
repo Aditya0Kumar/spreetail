@@ -5,7 +5,7 @@ import Dashboard from "./components/Dashboard";
 import ImportWizard from "./components/ImportWizard";
 import ChatAssistant from "./components/ChatAssistant";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API;
 const GROUP_ID = 1;
 
 export default function App() {
