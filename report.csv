@@ -1,0 +1,24 @@
+Row,Anomaly Type,Description in CSV,Detection & Handling Policy,Action Taken
+6,DUPLICATE_EXPENSE,"Dev, ""dinner - marina bites"", 3200 INR",Identifies duplicate entries,REJECTED/DELETED
+7,INCONSISTENT_NUMBER_FORMAT,"Aisha, ""Electricity Feb"", ""1,200"" INR",String contains double quotes and thousands commas,CLEANED & PARSED
+9,PAYER_NAME_CASING,"priya in lowercase instead of Priya",Lowercase name,NORMALIZED
+10,FRACTIONAL_PRECISION,"Rohan, ""Cylinder refill"", 899.995 INR",Amount contains > 2 decimal places,ROUNDED
+11,PAYER_NAME_ALIAS,"Priya S paid instead of Priya",Unknown alias name,MAPPED
+13,MISSING_PAYER,"paid_by empty",Empty paid_by field,MANUALLY ASSIGNED
+14,SETTLEMENT_AS_EXPENSE,"Rohan, ""Rohan paid Aisha back"", 5000 INR",split_type empty description indicates a payback,CONVERTED TO PAYMENT
+15,INVALID_PERCENTAGE_SUM,"Aisha, ""Pizza Friday"", percentages sum to 110%",Split type is percentage but sum is off,RE-SCALED
+20,FOREIGN_CURRENCY,"Dev, ""Goa villa booking"", 540 USD",USD currency,CONVERTED TO INR
+21,FOREIGN_CURRENCY,"Rohan, ""Beach shack lunch"", 84 USD",USD currency,CONVERTED TO INR
+23,NON_MEMBER_SPLIT,"Dev's friend Kabir in split members list",Split member not in flatmate database,ALLOCATED GUEST SHARE TO DEV
+25,DUPLICATE_EXPENSE,"Rohan, ""Thalassa dinner"", 2450 INR",Conflict duplicate of Row 24,REJECTED/DELETED
+26,FOREIGN_CURRENCY / NEGATIVE_AMOUNT,"Dev, ""Parasailing refund"", -30 USD",Negative amount refund in USD,CONVERTED TO INR CREDITS
+27,INCONSISTENT_DATE_FORMAT,"date Mar-14. Payer name rohan has space",Date is written as MMM-DD,PARSED
+28,MISSING_CURRENCY,"Priya, ""Groceries DMart"", currency empty",Currency column is empty,DEFAULTED TO INR
+31,ZERO_AMOUNT,"Priya, ""Dinner order Swiggy"", 0 INR",Amount is 0,REJECTED/DELETED
+32,INVALID_PERCENTAGE_SUM,"Meera, ""Weekend brunch"", percentages sum to 110%",Split percentages sum to 110%,RE-SCALED
+34,AMBIGUOUS_DATE,"date 04-05-2026",Date format is ambiguous,RESOLVED AS APRIL 5 2026
+36,INACTIVE_MEMBER_SPLIT_MEERA,"Groceries BigBasket, April 2. Meera in split",Meera charged after moving out March 31,EXCLUDED MEERA
+38,SETTLEMENT_AS_EXPENSE,"Sam, ""Sam deposit share"", 15000 INR",Sam pays deposit to Aisha,CONVERTED TO PAYMENT
+39,INACTIVE_MEMBER_SPLIT_SAM,"Sam, ""Housewarming drinks"", April 10",Sam charged before join date,APPROVED AS EXCEPTION
+40,POSTPAID_UTILITY_MISALLOCATION,"Aisha, ""Electricity Apr"" (April 12). Sam in split",April utility bill covers March usage,EXCLUDED SAM / INCLUDED MEERA
+42,INCONSISTENT_SPLIT_DETAILS,"""Furniture"", split_type equal, details listed",Equal split has redundant details,IGNORED DETAILS & SPLIT EQUALLY
