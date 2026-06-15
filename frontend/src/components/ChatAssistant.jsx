@@ -41,7 +41,7 @@ export default function ChatAssistant({ backendUrl, groupId }) {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-40 p-4 bg-[#5b45ff] text-white rounded-full shadow-lg hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-200"
+        className="fixed bottom-6 right-6 z-40 p-4 bg-[#00d8a5] text-[#09090b] rounded-full shadow-[0_0_20px_rgba(0,216,165,0.4)] hover:bg-[#00b388] hover:-translate-y-1 transition-all duration-200"
         title="Ask AI Assistant"
       >
         {isOpen ? <X className="w-6 h-6" /> : <Bot className="w-6 h-6" />}
@@ -49,37 +49,37 @@ export default function ChatAssistant({ backendUrl, groupId }) {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white border-l border-slate-200 shadow-2xl z-40 flex flex-col transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-[#09090b] border-l border-[#27272a] shadow-2xl z-40 flex flex-col transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
-        <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white">
+        <div className="p-5 border-b border-[#27272a] flex justify-between items-center bg-[#09090b]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-[#5b45ff]" />
+            <div className="w-8 h-8 rounded bg-[#00d8a5]/10 border border-[#00d8a5]/20 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-[#00d8a5]" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-800 text-sm">Spreetail AI Assistant</h3>
-              <p className="text-[10px] text-slate-500">Powered by Gemini</p>
+              <h3 className="font-bold text-white text-sm">Spreetail AI Assistant</h3>
+              <p className="text-[10px] text-zinc-500">Powered by Gemini</p>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-600">
+          <button onClick={() => setIsOpen(false)} className="text-zinc-500 hover:text-white transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-5 bg-[#f4f7fb] space-y-4">
+        <div className="flex-1 overflow-y-auto p-5 bg-[#09090b] space-y-4">
           {messages.map((msg, idx) => {
             const isBot = msg.sender === "bot";
             return (
               <div key={idx} className={`flex ${isBot ? "justify-start" : "justify-end"}`}>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+                  className={`max-w-[85%] rounded px-4 py-3 text-sm leading-relaxed shadow-sm ${
                     isBot 
-                      ? "bg-white text-slate-700 border border-slate-100 rounded-tl-sm" 
-                      : "bg-[#5b45ff] text-white rounded-tr-sm"
+                      ? "bg-[#18181b] text-zinc-300 border border-[#27272a] rounded-tl-sm" 
+                      : "bg-[#00d8a5] text-[#09090b] rounded-tr-sm font-medium"
                   }`}
                   style={{ whiteSpace: "pre-line" }}
                 >
@@ -90,8 +90,8 @@ export default function ChatAssistant({ backendUrl, groupId }) {
           })}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-white border border-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm flex items-center gap-2 text-slate-500 shadow-sm">
-                <Loader2 className="w-4 h-4 animate-spin text-[#5b45ff]" />
+              <div className="bg-[#18181b] border border-[#27272a] rounded rounded-tl-sm px-4 py-3 text-sm flex items-center gap-2 text-zinc-400 shadow-sm">
+                <Loader2 className="w-4 h-4 animate-spin text-[#00d8a5]" />
                 Analyzing ledger...
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function ChatAssistant({ backendUrl, groupId }) {
         </div>
 
         {/* Input */}
-        <div className="p-4 bg-white border-t border-slate-100">
+        <div className="p-4 bg-[#09090b] border-t border-[#27272a]">
           <form onSubmit={handleSend} className="flex gap-2">
             <input
               type="text"
@@ -109,17 +109,17 @@ export default function ChatAssistant({ backendUrl, groupId }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={loading}
-              className="flex-1 bg-[#f4f7fb] border border-transparent rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#5b45ff] focus:bg-white transition-colors"
+              className="flex-1 bg-[#18181b] border border-[#27272a] rounded px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#00d8a5] focus:bg-[#09090b] transition-colors"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="p-3 bg-[#5b45ff] disabled:bg-indigo-300 hover:bg-indigo-700 text-white rounded-xl shadow-sm transition-colors"
+              className="p-3 bg-[#00d8a5] disabled:bg-[#00d8a5]/50 disabled:text-[#09090b]/50 text-[#09090b] hover:bg-[#00b388] rounded shadow-sm transition-colors"
             >
               <Send className="w-5 h-5" />
             </button>
           </form>
-          <p className="text-[9px] text-center text-slate-400 mt-2">AI can make mistakes. Verify important information.</p>
+          <p className="text-[9px] text-center text-zinc-600 mt-2">AI can make mistakes. Verify important information.</p>
         </div>
       </div>
     </>

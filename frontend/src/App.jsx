@@ -32,15 +32,15 @@ export default function App() {
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#f4f7fb] overflow-hidden text-slate-800 font-sans">
+    <div className="flex h-screen w-full bg-[#09090b] overflow-hidden text-zinc-100 font-sans">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 shadow-sm z-20">
+      <aside className="w-64 bg-[#09090b] border-r border-[#27272a] flex flex-col justify-between shrink-0 z-20">
         <div>
           {/* Logo */}
-          <div className="h-16 flex items-center px-6 border-b border-slate-100">
-            <div className="flex items-center gap-2 text-xl font-bold text-slate-800">
-              <div className="w-8 h-8 rounded-lg bg-[#5b45ff] text-white flex items-center justify-center text-lg">S</div>
+          <div className="h-16 flex items-center px-6 border-b border-[#27272a]">
+            <div className="flex items-center gap-2 text-xl font-bold text-white tracking-tight">
+              <div className="w-8 h-8 rounded bg-[#00d8a5] text-[#09090b] flex items-center justify-center text-lg shadow-[0_0_15px_rgba(0,216,165,0.3)]">S</div>
               Spreetail
             </div>
           </div>
@@ -55,10 +55,10 @@ export default function App() {
                   key={item.id}
                   onClick={() => setActiveView(item.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
-                    isActive ? "bg-[#5b45ff] text-white shadow-sm" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    isActive ? "bg-[#18181b] border border-[#27272a] text-[#00d8a5]" : "text-zinc-400 hover:bg-[#18181b] hover:text-white"
                   }`}
                 >
-                  <Icon className={`w-4.5 h-4.5 ${isActive ? "text-white" : "text-slate-400"}`} />
+                  <Icon className={`w-4.5 h-4.5 ${isActive ? "text-[#00d8a5]" : "text-zinc-500"}`} />
                   {item.label}
                 </button>
               );
@@ -66,12 +66,12 @@ export default function App() {
           </nav>
 
           {/* Secondary Nav */}
-          <nav className="px-4 pb-4 space-y-1 border-t border-slate-100 pt-4 mt-2">
+          <nav className="px-4 pb-4 space-y-1 border-t border-[#27272a] pt-4 mt-2">
             {secondaryNavItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button key={item.id} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors duration-150">
-                  <Icon className="w-4.5 h-4.5 text-slate-400" />
+                <button key={item.id} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:bg-[#18181b] hover:text-white transition-colors duration-150">
+                  <Icon className="w-4.5 h-4.5 text-zinc-500" />
                   {item.label}
                 </button>
               );
@@ -80,14 +80,14 @@ export default function App() {
         </div>
 
         {/* Active Members Footer */}
-        <div className="p-5 border-t border-slate-100">
+        <div className="p-5 border-t border-[#27272a]">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-semibold text-slate-500">Active Members (6)</span>
-            <button className="text-[10px] text-[#5b45ff] font-medium hover:underline">View all</button>
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Active Members (6)</span>
+            <button className="text-[10px] text-[#00d8a5] font-medium hover:underline">View all</button>
           </div>
           <div className="flex -space-x-2">
             {["Aisha", "Rohan", "Priya", "Meera", "Sam", "Dev"].map((u, i) => (
-              <div key={i} className="w-7 h-7 rounded-full border-2 border-white bg-indigo-100 flex items-center justify-center text-[10px] font-bold text-indigo-700 shadow-sm" title={u}>
+              <div key={i} className="w-7 h-7 rounded-full border-2 border-[#09090b] bg-[#18181b] flex items-center justify-center text-[10px] font-bold text-zinc-300 shadow-sm" title={u}>
                 {u[0]}
               </div>
             ))}
@@ -96,36 +96,37 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden">
+      <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#09090b]">
         
         {/* Topbar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 z-10 shadow-sm">
-          <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+        <header className="h-16 bg-[#09090b] border-b border-[#27272a] flex items-center justify-between px-8 shrink-0 z-10">
+          <h1 className="text-xl font-bold text-white flex items-center gap-2">
             {navItems.find(i => i.id === activeView)?.label || "Dashboard"}
             {activeView === "dashboard" && " 👋"}
           </h1>
           
           <div className="flex items-center gap-6">
-            <button className="relative text-slate-400 hover:text-slate-600 transition-colors">
+            <button className="relative text-zinc-400 hover:text-white transition-colors">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+              <span className="absolute top-0 right-0 w-2 h-2 bg-[#00d8a5] rounded-full border-2 border-[#09090b]"></span>
             </button>
             
-            <div className="flex items-center gap-3 cursor-pointer pl-6 border-l border-slate-200" onClick={() => setCurrentUser(null)} title="Click to logout">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+            <div className="flex items-center gap-3 cursor-pointer pl-6 border-l border-[#27272a]" onClick={() => setCurrentUser(null)} title="Click to logout">
+              <div className="w-8 h-8 rounded border border-[#27272a] bg-[#18181b] flex items-center justify-center text-white text-xs font-bold">
                 {currentUser.username[0].toUpperCase()}
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold leading-tight">{currentUser.username}</span>
-                <span className="text-[10px] text-green-600 font-medium">Active</span>
+                <span className="text-sm font-bold leading-tight text-white">{currentUser.username}</span>
+                <span className="text-[10px] text-[#00d8a5] font-medium tracking-wide uppercase">Partner</span>
               </div>
-              <ChevronDown className="w-4 h-4 text-slate-400 ml-1" />
+              <ChevronDown className="w-4 h-4 text-zinc-500 ml-1" />
             </div>
           </div>
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-8 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,216,165,0.03),transparent_50%)] pointer-events-none" />
           {activeView === "dashboard" && (
             <Dashboard 
               currentUser={currentUser} 
