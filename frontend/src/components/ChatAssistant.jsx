@@ -11,6 +11,8 @@ export default function ChatAssistant({ backendUrl, groupId }) {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userApiKey, setUserApiKey] = useState("");
+  const [needsApiKey, setNeedsApiKey] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,10 +28,17 @@ export default function ChatAssistant({ backendUrl, groupId }) {
     try {
       const res = await fetch(`${backendUrl}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, groupId })
+        body: JSON.stringify({ message: userMessage, groupId, apiKey: userApiKey })
       });
       if (!res.ok) throw new Error("Failed to generate response");
       const data = await res.json();
+      
+      if (data.error === "MISSING_API_KEY") {
+        setNeedsApiKey(true);
+        setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
+        return;
+      }
+      
       setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
     } catch (error) {
       setMessages((prev) => [...prev, { sender: "bot", text: "Failed to connect to AI server. Please check your backend." }]);
@@ -101,24 +110,52 @@ export default function ChatAssistant({ backendUrl, groupId }) {
 
         {/* Input */}
         <div className="p-4 bg-[#09090b] border-t border-[#27272a]">
-          <form onSubmit={handleSend} className="flex gap-2">
-            <input
-              type="text"
-              required
-              placeholder="Ask anything about expenses..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={loading}
-              className="flex-1 bg-[#18181b] border border-[#27272a] rounded px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#00d8a5] focus:bg-[#09090b] transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={loading || !input.trim()}
-              className="p-3 bg-[#00d8a5] disabled:bg-[#00d8a5]/50 disabled:text-[#09090b]/50 text-[#09090b] hover:bg-[#00b388] rounded shadow-sm transition-colors"
-            >
-              <Send className="w-5 h-5" />
-            </button>
-          </form>
+          {needsApiKey ? (
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if(input.trim()) {
+                setUserApiKey(input.trim());
+                setNeedsApiKey(false);
+                setInput("");
+                setMessages(prev => [...prev, { sender: "bot", text: "API Key saved for this session! Please ask your question again." }]);
+              }
+            }} className="flex gap-2">
+              <input
+                type="password"
+                required
+                placeholder="Paste Gemini API Key here..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="flex-1 bg-[#18181b] border border-[#27272a] rounded px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:bg-[#09090b] transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                className="p-3 bg-amber-400 disabled:bg-amber-400/50 text-[#09090b] hover:bg-amber-500 rounded shadow-sm transition-colors"
+              >
+                Save
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleSend} className="flex gap-2">
+              <input
+                type="text"
+                required
+                placeholder="Ask anything about expenses..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                disabled={loading}
+                className="flex-1 bg-[#18181b] border border-[#27272a] rounded px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#00d8a5] focus:bg-[#09090b] transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={loading || !input.trim()}
+                className="p-3 bg-[#00d8a5] disabled:bg-[#00d8a5]/50 disabled:text-[#09090b]/50 text-[#09090b] hover:bg-[#00b388] rounded shadow-sm transition-colors"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </form>
+          )}
           <p className="text-[9px] text-center text-zinc-600 mt-2">AI can make mistakes. Verify important information.</p>
         </div>
       </div>
