@@ -5,16 +5,17 @@ const { computeGroupBalances, simplifyDebts } = require("../services/ledger");
 const { GoogleGenAI } = require("@google/genai");
 
 router.post("/", async (req, res) => {
-  const { message, groupId } = req.body;
+  const { message, groupId, apiKey: clientApiKey } = req.body;
 
   if (!message || !groupId) {
     return res.status(400).json({ error: "message and groupId are required" });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.json({
-      reply: "🤖 **Gemini AI Assistant is offline.**\n\nTo enable this feature, please configure your `GEMINI_API_KEY` in the `backend/.env` file and restart the server.\n\n*In the meantime, you can review balances and ledgers directly on the dashboard!*"
+      error: "MISSING_API_KEY",
+      reply: "Please provide your Gemini API key to activate the assistant."
     });
   }
 
