@@ -77,3 +77,12 @@ A highly polished, fintech-style shared expenses web application built to help f
 5. **Multi-Currency Toggle (Priya's View):** Toggle between base currency (INR) and original transaction currencies (USD/INR) showing clean conversion rates.
 6. **Time-Bound Group Memberships (Sam's View):** Excludes Meera after March 31, excludes Sam before April 15 (with a custom override exception for housewarming drinks), and corrects misallocated post-paid March utility bills.
 7. **AI Chat Assistant:** Panel connecting to Gemini 2.5 Flash to answer questions like *"Why does Sam owe Rohan?"* or *"Who spent the most on groceries?"* in natural language using the actual live database state.
+
+---
+
+## Documentation & Logs
+
+Please review the following documentation for deeper architectural insights and AI pair-programming records:
+- **[AI_USAGE.md](./AI_USAGE.md):** AI tools used, prompt engineering strategies, and concrete debugging cases.
+- **[DECISIONS.md](./DECISIONS.md):** System design logic, technical trade-offs, and algorithm breakdowns.
+- **[SCOPE.md](./SCOPE.md):** Database schema definitions and the detailed anomaly detection log.
